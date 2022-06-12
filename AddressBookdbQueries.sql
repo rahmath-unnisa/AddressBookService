@@ -47,6 +47,47 @@ select count(*),state from Address_book group by state;
 select * from Address_book where city ='Hyderabad' order by first_name;
 -----------------------------------------------------------------------------------------
 ------------->UC9
-
+alter table Address_book ADD Type varchar(10);
+update Address_book SET Type ='Family' where First_name='Manha';
+update Address_book SET Type ='Profession' where First_name='Hamza';
+update Address_book SET Type ='Friend' where First_name='Kiyan';
 -----------------------------------------------------------------------------------------
+------------->UC10
+select count(*),type from Address_book group by type;
+
+------------------------------------------------------------------------------------------
+------------->UC11
+alter table Address_book Drop column type;
+Create table AddressBookType (
+Typeid int primary key Identity(1,1) ,
+type varchar(10)
+);
+Create table AddressBookMapping(
+MappingID int primary key Identity(1,1) ,
+AddressBookID int ,
+Typeid int   ,
+);
+alter table AddressBookMapping ADD Foreign Key (AddressBookID)
+ References Address_Book(id);
+alter table AddressBookMapping ADD Foreign Key (Typeid)
+ References AddressBookType(Typeid);
+
+
+insert into AddressBookType values
+('Friends'),
+('Family'),
+('Profession'),
+('Others');
+
+
+Insert into AddressBookMapping(AddressBookID,Typeid)values
+(1,1),
+(1,2);
+Select * from Address_book INNER JOIN 
+AddressBookMapping ON Address_book.ID=AddressBookMapping.AddressBookID
+INNER JOIN AddressBookType ON AddressBookType.Typeid=AddressBookMapping.Typeid
+ 
+
+
+
 
